@@ -5,9 +5,13 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "server": "nodemon index.js"
+    "server": "nodemon index.js",
+    "client": "npm run start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "dependencies": {
+    "concurrently": "^5.1.0",
+    "cors": "^2.8.5",
     "knex": "^0.20.11",
     "sqlite3": "^4.1.1"
   },
