@@ -3,6 +3,18 @@ const router = express.Router();
 
 const db = require('../data/db');
 
+const formateDate = date => {
+    const year = date.getFullYear();
+    const month = (((date.getMonth() + 1) < 10 ? '0' : '') + (date.getMonth() + 1));
+    const day = ((date.getDate() < 10 ? '0' : '') + date.getDate());
+    const hour = ((date.getHours() < 10 ? '0' : '') + date.getHours());
+    const minutes = ((date.getMinutes() < 10 ? '0' : '') + date.getMinutes());
+    const seconds = ((date.getSeconds() < 10 ? '0' : '') + date.getSeconds());
+
+    // "2019-05-11 01:55:52"
+    return `${year}-${month}-${day} ${hour}:${minutes}:${seconds}`;
+}
+
 // @route   GET /api/posts
 // @desc    Returns an array of all the post objects contained in the database.
 router.get('/', async (req, res) => {
@@ -76,8 +88,16 @@ router.put('/:id', async (req, res) => {
         if (!title || !contents ) {
             return res.status(400).json({ errorMessage: 'Please provide title and contents for the post' });
         }
+        
+        const updatedPostsNumber = await db.update(
+            post[0].id,
+            { 
+                title,
+                contents,
+                updated_at: formateDate(new Date()) 
+            }
+        );
 
-        const updatedPostsNumber = await db.update(post[0].id, { title, contents });
         if (updatedPostsNumber !== 1) {
             return res.status(500).json({ error: 'There was an error updating the post.' });
         }
@@ -91,8 +111,18 @@ router.put('/:id', async (req, res) => {
 
 // @route   GET /api/posts/:id/comments
 // @desc    Returns an array of all the comment objects associated with the post with the specified id.
-router.get('/:id/comments', (req, res) => {
+router.get('/:id/comments', async (req, res) => {
+    try {
+        const post = await db.findById(req.params.id);
+        if (post.length === 0) {
+            return res.status(404).json({ message: 'The post with the specified ID does not exist.' });
+        }
 
+        const comments = await db.findPostComments(post[0].id);
+        res.json(comments);
+    } catch(err) {
+        res.status(500).json({ error: 'The comments information could not be retrieved.' });
+    }
 });
 
 // @route   POST /api/posts/:id/comments
