@@ -127,8 +127,30 @@ router.get('/:id/comments', async (req, res) => {
 
 // @route   POST /api/posts/:id/comments
 // @desc    Creates a comment for the post with the specified id using information sent inside of the request body.
-router.post('/:id/comments', (req, res) => {
+router.post('/:id/comments', async (req, res) => {
+    try {
+        const post = await db.findById(req.params.id);
+        if (post.length === 0) {
+            return res.status(404).json({ message: 'The post with the specified ID does not exist.' });
+        }
 
+        const { text } = req.body;
+        if (!text) {
+            return res.status(400).json({ errorMessage: 'Please provide text for the comment.' });
+        }
+
+        const newComment = {
+            text,
+            post_id: post[0].id
+        }
+
+        const idObj = await db.insertComment(newComment);
+        const createdComment = await db.findCommentById(idObj.id);
+
+        res.status(201).json(createdComment);
+    } catch(err) {
+        res.status(500).json({ error: 'There was an error while saving the comment to the database.' });
+    }
 });
 
 module.exports = router;
