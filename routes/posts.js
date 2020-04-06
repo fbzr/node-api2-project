@@ -65,19 +65,39 @@ router.delete('/:id', async (req, res) => {
 
 // @route   PUT /api/posts/:id
 // @desc    Updates the post with the specified id using data from the request body. Returns the modified document, NOT the original.
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
+    try {
+        const post = await db.findById(req.params.id);
+        if (post.length === 0) {
+            return res.status(404).json({ message: 'The post with the specified ID does not exist.' });
+        }
+    
+        const { title, contents } = req.body;
+        if (!title || !contents ) {
+            return res.status(400).json({ errorMessage: 'Please provide title and contents for the post' });
+        }
 
+        const updatedPostsNumber = await db.update(post[0].id, { title, contents });
+        if (updatedPostsNumber !== 1) {
+            return res.status(500).json({ error: 'There was an error updating the post.' });
+        }
+
+        const updatedPost = await db.findById(post[0].id);
+        res.json(updatedPost[0]);
+    } catch(err) {
+        res.status(500).json({ error: 'The post information could not be modified.' });
+    }
 });
 
 // @route   GET /api/posts/:id/comments
 // @desc    Returns an array of all the comment objects associated with the post with the specified id.
-router.get('/:id', (req, res) => {
+router.get('/:id/comments', (req, res) => {
 
 });
 
 // @route   POST /api/posts/:id/comments
 // @desc    Creates a comment for the post with the specified id using information sent inside of the request body.
-router.post('/:id', (req, res) => {
+router.post('/:id/comments', (req, res) => {
 
 });
 
