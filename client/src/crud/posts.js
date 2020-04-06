@@ -31,3 +31,13 @@ export const getPostComments = async postId => {
 export const addPostComment = async (postId, comment) => {
     return postsAxios.post(`/${postId}/comments`, { text: comment });
 }
+
+export default {
+    getAllPosts,
+    addPost,
+    getPostById,
+    deletePost,
+    updatePost,
+    getPostComments,
+    addPostComment
+}
