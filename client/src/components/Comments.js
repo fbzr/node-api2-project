@@ -4,7 +4,7 @@ import { PostsContext } from '../context/PostsContext';
 import postsCrud from '../crud/posts';
 // components
 import { Scrollbars } from 'react-custom-scrollbars';
-import { Form, Button } from 'semantic-ui-react';
+import { Form, Button, Segment } from 'semantic-ui-react';
 
 const Comments = () => {
     const { selectedPost, setSelectedPost } = useContext(PostsContext);
@@ -38,9 +38,11 @@ const Comments = () => {
     return (
         <>
             <Scrollbars autoHeight>
-                {comments.map(comment => (
-                    <pre>{JSON.stringify(comment, null, 2)}</pre>
-                ))}
+                <Segment.Group>    
+                    {comments.map(comment => (
+                        <Segment>{comment.text}</Segment>
+                    ))}
+                </Segment.Group>
             </Scrollbars>
             <Form onSubmit={handleSubmit}>
                 <Form.Field>
