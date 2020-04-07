@@ -6,7 +6,7 @@ const Post = ({ post }) => {
     const { title, contents } = post;
     const { setSelectedPost } = useContext(PostsContext);
     return (
-        <Card onClick={() => setSelectedPost(post)}>
+        <Card onClick={() => setSelectedPost(post)} style={{marginLeft: 'auto', marginRight: 'auto'}}>
             <Card.Content>
                 <Card.Header>{title}</Card.Header>
                 <Card.Description>
