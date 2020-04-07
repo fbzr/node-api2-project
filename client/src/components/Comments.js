@@ -4,7 +4,7 @@ import { PostsContext } from '../context/PostsContext';
 import postsCrud from '../crud/posts';
 // components
 import { Scrollbars } from 'react-custom-scrollbars';
-import { Form, Button, Segment, Icon, Input } from 'semantic-ui-react';
+import { Form, Button, Segment, Icon, Input, Container } from 'semantic-ui-react';
 
 const Comments = () => {
     const { selectedPost, setSelectedPost } = useContext(PostsContext);
@@ -35,18 +35,23 @@ const Comments = () => {
     }
 
     return (
-        <>
+        <Container>
+            <h3>Comments</h3>
             <Scrollbars autoHeight>
-                <Segment.Group>    
+                {comments.length > 0 ? 
+                    <Segment.Group>    
                     {comments.map((comment, index) => (
                         <Segment key={index}>{comment.text}</Segment>
                     ))}
                 </Segment.Group>
+                :
+                <h5>No comments</h5>
+                }
             </Scrollbars>
             <Input required icon={
                 <Icon name='add' circular link type='submit' onClick={handleSubmit} />
-            } value={newComment} onChange={handleInput} name='comment' placeholder='Add a comment' style={{width: '100%'}} />
-        </>
+            } value={newComment} onChange={handleInput} name='comment' placeholder='Add a comment' style={{width: '100%', marginTop: '30px'}} />
+        </Container>
     )
 }
 

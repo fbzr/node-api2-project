@@ -8,9 +8,11 @@ const Posts = () => {
     const { posts } = useContext(PostsContext);
     return (
         <Scrollbars>
-            {posts.map(post => (
-                <Post key={post.id} post={post} />
-            ))}
+            <div style={{marginRight: '25px'}}>
+                {posts.map(post => (
+                    <Post key={post.id} post={post} />
+                ))}
+            </div>
         </Scrollbars>
     );
 }

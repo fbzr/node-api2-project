@@ -12,7 +12,7 @@ const initialPost = {
 }
 
 const PostForm = () => {
-    const { posts, setPosts, selectedPost, setSelectedPost } = useContext(PostsContext);
+    const { posts, setPosts, selectedPost, setSelectedPost, editing } = useContext(PostsContext);
     const [post, setPost] = useState(selectedPost || initialPost);
 
     useEffect(() => {
@@ -58,21 +58,23 @@ const PostForm = () => {
     }
 
     return (
-        <Form onSubmit={handleSubmit}>
-            <Form.Field>
-                <label>Title</label>
-                <textarea required rows='5' cols='30' value={post.title} onChange={handleInput} name='title' placeholder='Title' />
-            </Form.Field>
-            <Form.Field>
-                <label>Contents</label>
-                <input required value={post.contents} onChange={handleInput} name='contents' placeholder='Contents' />
-            </Form.Field>
-            <Button type='submit'>Submit</Button>
-            {selectedPost && 
-            <Button icon onClick={handleDelete}>
-                <Icon name='trash alternate' />
-            </Button>}
-        </Form>
+        editing && (
+            <Form onSubmit={handleSubmit}>
+                <Form.Field>
+                    <label>Title</label>
+                    <textarea required rows='5' cols='30' value={post.title} onChange={handleInput} name='title' placeholder='Title' />
+                </Form.Field>
+                <Form.Field>
+                    <label>Contents</label>
+                    <input required value={post.contents} onChange={handleInput} name='contents' placeholder='Contents' />
+                </Form.Field>
+                <Button type='submit'>Submit</Button>
+                {selectedPost && 
+                <Button icon onClick={handleDelete}>
+                    <Icon name='trash alternate' />
+                </Button>}
+            </Form>
+        )
     )
 }
 
