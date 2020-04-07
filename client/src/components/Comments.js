@@ -4,10 +4,10 @@ import { PostsContext } from '../context/PostsContext';
 import postsCrud from '../crud/posts';
 // components
 import { Scrollbars } from 'react-custom-scrollbars';
-import { Form, Button, Segment, Icon, Input, Container } from 'semantic-ui-react';
+import { Segment, Icon, Input, Container } from 'semantic-ui-react';
 
 const Comments = () => {
-    const { selectedPost, setSelectedPost } = useContext(PostsContext);
+    const { selectedPost } = useContext(PostsContext);
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState('');
 

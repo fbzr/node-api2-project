@@ -5,7 +5,7 @@ import { PostsContext } from './context/PostsContext';
 import Posts from './components/Posts';
 import Comments from './components/Comments';
 import PostForm from './components/PostForm';
-import { Grid, Header, Container, Button } from 'semantic-ui-react';
+import { Grid, Button } from 'semantic-ui-react';
 // crud operations
 import postsCrud from './crud/posts';
 
