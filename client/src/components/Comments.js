@@ -4,7 +4,7 @@ import { PostsContext } from '../context/PostsContext';
 import postsCrud from '../crud/posts';
 // components
 import { Scrollbars } from 'react-custom-scrollbars';
-import { Form, Button, Segment } from 'semantic-ui-react';
+import { Form, Button, Segment, Icon, Input } from 'semantic-ui-react';
 
 const Comments = () => {
     const { selectedPost, setSelectedPost } = useContext(PostsContext);
@@ -18,16 +18,15 @@ const Comments = () => {
                 setComments(res.data);
             }
         })();
-    }, [selectedPost]);
+    }, [selectedPost, comments]);
 
     const handleSubmit = async () => {
         const res = await postsCrud.addPostComment(selectedPost.id, newComment);
-        setComments([
-            ...comments,
+        setComments(prev => ([
+            ...prev,
             res.data
-        ]);
+        ]));
         
-        setSelectedPost(null);
         setNewComment('');
     }
 
@@ -39,17 +38,14 @@ const Comments = () => {
         <>
             <Scrollbars autoHeight>
                 <Segment.Group>    
-                    {comments.map(comment => (
-                        <Segment>{comment.text}</Segment>
+                    {comments.map((comment, index) => (
+                        <Segment key={index}>{comment.text}</Segment>
                     ))}
                 </Segment.Group>
             </Scrollbars>
-            <Form onSubmit={handleSubmit}>
-                <Form.Field>
-                    <input required value={newComment} onChange={handleInput} name='comment' placeholder='Comment' />
-                </Form.Field>
-                <Button type='submit'>Submit</Button>
-            </Form>
+            <Input required icon={
+                <Icon name='add' circular link type='submit' onClick={handleSubmit} />
+            } value={newComment} onChange={handleInput} name='comment' placeholder='Add a comment' style={{width: '100%'}} />
         </>
     )
 }
