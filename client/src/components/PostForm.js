@@ -60,6 +60,7 @@ const PostForm = () => {
     return (
         editing && (
             <Form onSubmit={handleSubmit}>
+                <h1>{selectedPost ? 'Edit post' : 'Add post'}</h1>
                 <Form.Field>
                     <label>Title</label>
                     <textarea required rows='5' cols='30' value={post.title} onChange={handleInput} name='title' placeholder='Title' />

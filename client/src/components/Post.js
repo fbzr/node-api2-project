@@ -7,8 +7,8 @@ const Post = ({ post }) => {
     const { setSelectedPost, setEditing } = useContext(PostsContext);
 
     const handleCardClick = () => {
-        setEditing(false);
         setSelectedPost(post);
+        setEditing(false);
     }
 
     const handleEditBtnClick = e => {

@@ -21,9 +21,15 @@ function App() {
     })();
   }, []);
 
+  useEffect(() => {
+    if(!selectedPost) {
+      setEditing(true);
+    } 
+  }, [selectedPost]);
+
   const handleCreatePostBtn = () => {
     setSelectedPost(null);
-    setEditing(true);
+    // setEditing(true);
   }
 
   return (
@@ -46,7 +52,7 @@ function App() {
             </Grid.Column>
 
             <Grid.Column width={4}>
-              {selectedPost && !editing && <Comments />}
+              {(selectedPost && !editing) && <Comments />}
               {editing && <PostForm />}
             </Grid.Column>
           </Grid.Row>
